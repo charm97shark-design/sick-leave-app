@@ -396,13 +396,15 @@ const SYMPTOM_CATEGORIES = [
   { label: 'ประจำเดือน', keywords: ['ประจำเดือน','เมนส์'] }
 ];
 
+/* 📌 ฟังก์ชันแก้ใหม่ให้แสดงคำตรงๆ หากไม่เข้าหมวดหมู่ */
 function classifySymptom(text){
   if(!text) return 'ไม่ระบุ';
-  const t = String(text).trim().toLowerCase();
+  const t = String(text).trim();
+  const lowerT = t.toLowerCase();
   for(const cat of SYMPTOM_CATEGORIES){
-    for(const kw of cat.keywords){ if(t.includes(kw)) return cat.label; }
+    for(const kw of cat.keywords){ if(lowerT.includes(kw)) return cat.label; }
   }
-  return 'อื่นๆ';
+  return t; // 📌 เปลี่ยนจาก return 'อื่นๆ' เป็นให้ส่งคำดิบๆ ออกไปเลย
 }
 
 /* ================= API ================= */
@@ -763,7 +765,7 @@ function openEmpModal(empId){
   
   const deptStr = e.department || e.position || '-';
   
-  document.getElementById('empModalRoot').innerHTML = `<div class="modal-backdrop" onclick="if(event.target===this) this.remove()"><div class="modal"><button class="close-x" onclick="document.getElementById('empModalRoot').innerHTML=''">✕</button><h3 style="margin-bottom:0;">${escapeHtml(e ? e.name : empId)}</h3><p class="section-sub">รหัส ${escapeHtml(empId)} · แผนก <b>${escapeHtml(deptStr)}</b> · ปี ${selYear} · ลาป่วยรวม <strong>${recs.length}</strong> ครั้ง</p><div style="margin-bottom:14px;">${chips || '<span class="section-sub">ไม่มีข้อมูล</span>'}</div><div class="table-scroll" style="max-height:350px;"><table><thead><tr><th>วันที่</th><th>อาการ</th><th>หมายเหตุ</th></tr></thead><tbody>${recs.map(r => `<tr><td>${escapeHtml(displayDateStr(r.date))}</td><td>${escapeHtml(r.symptom||'')}</td><td>${escapeHtml(r.note||'')}</td></tr>`).join('')}</tbody></table></div></div></div>`;
+  document.getElementById('empModalRoot').innerHTML = `<div class="modal-backdrop" onclick="if(event.target===this) this.remove()"><div class="modal"><button class="close-x" onclick="document.getElementById('empModalRoot').innerHTML=''">✕</button><h3 style="margin-bottom:0;">${escapeHtml(e ? e.name : empId)}</h3><p class="section-sub">รหัส ${escapeHtml(empId)} · แผนก <b>${escapeHtml(deptStr)}</b> · ปี ${selYear} · ลาป่วยรวม <strong>${recs.length}</strong> ครั้ง</p><div style="margin-bottom:14px;">${chips || '<span class="section-sub">ไม่มีข้อมูล</span>'}</div><div class="table-scroll" style="max-height:350px;"><table><thead><tr><th>วันที่</th><th>อาการ</th><th>หมายเหตุ</th></tr></thead><tbody>${recs.map(r => `<tr><td>${escapeHtml(displayDateStr(r.date))}</td><td>${escapeHtml(r.symptom\vert{}\vert{}'')}</td><td>${escapeHtml(r.note||'')}</td></tr>`).join('')}</tbody></table></div></div></div>`;
 }
 
 document.getElementById('f_date').valueAsDate = new Date();
