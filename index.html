@@ -175,7 +175,6 @@
         <div class="card">
           <h3 class="section-title">รายการล่าสุด</h3>
           
-          <!-- 📌 อัปเดต Filter ค้นหา: เพิ่มตัวกรอง "ปี" เข้าไป -->
           <div class="search-row">
             <input type="text" id="searchInput" placeholder="พิมพ์หา วันที่ (เช่น 17/09), ชื่อ, รหัส..." style="flex: 2; min-width: 140px;">
             <select id="filterDept" style="flex: 1; min-width: 90px;">
@@ -385,24 +384,11 @@ function displayDateStr(dateStr) {
   return `${day}/${m}/${y}`;
 }
 
-const SYMPTOM_CATEGORIES = [
-  { label: 'ปวดหัว / เวียนหัว', keywords: ['ปวดหัว','ปวดศีรษะ','ศีรษะ','ไมเกรน','เวียนหัว','มึนหัว','หน้ามืด','วิงเวียน'] },
-  { label: 'หวัด / ทางเดินหายใจ', keywords: ['หวัด','คัดจมูก','น้ำมูก','จาม','เจ็บคอ','โควิด','covid','ไอ','ไข้หวัด'] },
-  { label: 'ไข้ / ป่วยทั่วไป', keywords: ['ไข้','ตัวร้อน','หนาวสั่น','ป่วย'] },
-  { label: 'ปวดท้อง / อาหารเป็นพิษ', keywords: ['ปวดท้อง','ท้องเสีย','ท้องร่วง','อาหารเป็นพิษ','อาเจียน','คลื่นไส้','ท้องอืด'] },
-  { label: 'กล้ามเนื้อ / เอ็น / กระดูก', keywords: ['ปวดเมื่อย','ปวดหลัง','ปวดกล้ามเนื้อ','เคล็ด','ปวดเข่า','ปวดขา','เส้นเอ็น','เอ็นฉีก'] },
-  { label: 'หัวใจ / ความดัน', keywords: ['หัวใจ','เต้นแรง','ความดัน'] },
-  { label: 'อุบัติเหตุ / บาดเจ็บ', keywords: ['อุบัติเหตุ','บาดเจ็บ','แผล','กระดูก','รถล้ม','กระแทก','ตาแดง'] },
-  { label: 'ประจำเดือน', keywords: ['ประจำเดือน','เมนส์'] }
-];
-
-function classifySymptom(text){
+// 📌 ดึงข้อความอาการตรงๆ ไม่ต้องจัดกลุ่มแล้ว เพื่อให้แสดงตามจริง
+function getRawSymptom(text){
   if(!text) return 'ไม่ระบุ';
-  const t = String(text).trim().toLowerCase();
-  for(const cat of SYMPTOM_CATEGORIES){
-    for(const kw of cat.keywords){ if(t.includes(kw)) return cat.label; }
-  }
-  return 'อื่นๆ';
+  const t = String(text).trim();
+  return t === '' ? 'ไม่ระบุ' : t;
 }
 
 /* ================= API ================= */
@@ -472,7 +458,7 @@ document.getElementById('f_empId').addEventListener('input', (e) => {
   document.getElementById('nameHint').textContent = e.target.value.trim() ? (info.name ? 'ชื่อ: '+info.name + (info.dept !== '-' ? ` (${info.dept})` : '') : 'ไม่พบข้อมูลในระบบ') : '';
 });
 
-// 📌 ฟังก์ชัน Render ตาราง พร้อมระบบ Filter อัจฉริยะ 4 ทาง (รวมปี)
+// 📌 ฟังก์ชัน Render ตาราง พร้อมระบบ Filter อัจฉริยะ 4 ทาง
 function renderEntryTable(){
   const q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
   const fDept = document.getElementById('filterDept').value;
@@ -484,10 +470,10 @@ function renderEntryTable(){
   
   rows = rows.filter(r => {
     const info = getEmpInfo(r.empId);
-    const dateStr = displayDateStr(r.date); // เช่น "17/09/2026"
+    const dateStr = displayDateStr(r.date); 
     const parts = dateStr.split('/');
-    const rMonth = parts[1]; // ดึง "09"
-    const rYear = parts[2];  // ดึง "2026"
+    const rMonth = parts[1]; 
+    const rYear = parts[2];  
 
     let matchText = true;
     if(q) {
@@ -525,7 +511,6 @@ function renderEntryTable(){
   }).join('');
 }
 
-// 📌 ผูก Event ดักจับการเปลี่ยนแปลงทั้ง 4 ช่อง ให้ตารางอัปเดตทันที
 document.getElementById('searchInput').addEventListener('input', renderEntryTable);
 document.getElementById('filterDept').addEventListener('change', renderEntryTable);
 document.getElementById('filterYear').addEventListener('change', renderEntryTable);
@@ -610,6 +595,7 @@ function renderDashboard(){
 
 function renderDailyAndWatchlist(yearRecords, todayStr, curM, selYear) {
   const todayRecs = state.records.filter(r => getFormattedDateStr(r.date) === todayStr);
+  
   const todayHtml = todayRecs.length > 0 
     ? todayRecs.map(r => {
         const info = getEmpInfo(r.empId);
@@ -646,7 +632,9 @@ function renderDepartmentCards(yearRecords) {
     if (!byDept[dept]) { byDept[dept] = { name: dept, count: 0, emps: new Set(), symptoms: {} }; }
     byDept[dept].count++;
     byDept[dept].emps.add(r.empId);
-    const cat = classifySymptom(r.symptom);
+    
+    // 📌 ดึงคำดิบๆ มานับ
+    const cat = getRawSymptom(r.symptom);
     byDept[dept].symptoms[cat] = (byDept[dept].symptoms[cat] || 0) + 1;
   });
 
@@ -705,7 +693,10 @@ function calculateEmployeeStats(yearRecords) {
     recs.forEach(r => {
       const m = parseDateObj(r.date).getMonth();
       if(!isNaN(m)) mCounts[m]++;
-      const cat = classifySymptom(r.symptom); catCounts[cat] = (catCounts[cat]||0) + 1;
+      
+      // 📌 ดึงคำดิบๆ มานับ
+      const cat = getRawSymptom(r.symptom);
+      catCounts[cat] = (catCounts[cat]||0) + 1;
     });
     const topCat = Object.entries(catCounts).sort((a,b) => b[1]-a[1])[0];
     return { emp, countY: recs.length, mCounts, topCat: topCat ? topCat[0] : '-', recs };
@@ -758,12 +749,16 @@ function openEmpModal(empId){
   const recs = state.records.filter(r => String(r.empId) === String(empId) && String(parseDateObj(r.date).getFullYear()) === selYear).sort((a,b) => parseDateObj(a.date).getTime() - parseDateObj(b.date).getTime());
   if(!e && recs.length > 0) e = { name: recs[0].name || 'ไม่มีชื่อ', department: '-', position: '-' };
   
-  const catCounts = {}; recs.forEach(r => { const c = classifySymptom(r.symptom); catCounts[c] = (catCounts[c]||0)+1; });
+  const catCounts = {}; recs.forEach(r => { 
+    // 📌 ดึงคำดิบๆ มานับ
+    const c = getRawSymptom(r.symptom); 
+    catCounts[c] = (catCounts[c]||0)+1; 
+  });
   const chips = Object.entries(catCounts).sort((a,b)=>b[1]-a[1]).map(([c,n]) => `<span class="chip">${escapeHtml(c)} × ${n}</span>`).join('');
   
   const deptStr = e.department || e.position || '-';
   
-  document.getElementById('empModalRoot').innerHTML = `<div class="modal-backdrop" onclick="if(event.target===this) this.remove()"><div class="modal"><button class="close-x" onclick="document.getElementById('empModalRoot').innerHTML=''">✕</button><h3 style="margin-bottom:0;">${escapeHtml(e ? e.name : empId)}</h3><p class="section-sub">รหัส ${escapeHtml(empId)} · แผนก <b>${escapeHtml(deptStr)}</b> · ปี ${selYear} · ลาป่วยรวม <strong>${recs.length}</strong> ครั้ง</p><div style="margin-bottom:14px;">${chips || '<span class="section-sub">ไม่มีข้อมูล</span>'}</div><div class="table-scroll" style="max-height:350px;"><table><thead><tr><th>วันที่</th><th>อาการ</th><th>หมายเหตุ</th></tr></thead><tbody>${recs.map(r => `<tr><td>${escapeHtml(displayDateStr(r.date))}</td><td>${escapeHtml(r.symptom||'')}</td><td>${escapeHtml(r.note||'')}</td></tr>`).join('')}</tbody></table></div></div></div>`;
+  document.getElementById('empModalRoot').innerHTML = `<div class="modal-backdrop" onclick="if(event.target===this) this.remove()"><div class="modal"><button class="close-x" onclick="document.getElementById('empModalRoot').innerHTML=''">✕</button><h3 style="margin-bottom:0;">${escapeHtml(e ? e.name : empId)}</h3><p class="section-sub">รหัส ${escapeHtml(empId)} · แผนก <b>${escapeHtml(deptStr)}</b> · ปี ${selYear} · ลาป่วยรวม <strong>${recs.length}</strong> ครั้ง</p><div style="margin-bottom:14px;">${chips || '<span class="section-sub">ไม่มีข้อมูล</span>'}</div><div class="table-scroll" style="max-height:350px;"><table><thead><tr><th>วันที่</th><th>อาการ</th><th>หมายเหตุ</th></tr></thead><tbody>${recs.map(r => `<tr><td>${escapeHtml(displayDateStr(r.date))}</td><td>${escapeHtml(r.symptom\vert{}\vert{}'')}</td><td>${escapeHtml(r.note||'')}</td></tr>`).join('')}</tbody></table></div></div></div>`;
 }
 
 document.getElementById('f_date').valueAsDate = new Date();
