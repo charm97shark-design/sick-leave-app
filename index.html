@@ -39,15 +39,14 @@
   .card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-card); box-shadow:var(--shadow); padding:22px; }
   .grid-2{ display:grid; grid-template-columns:1.15fr 1fr; gap:20px; align-items:start; }
   .grid-4{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
-  @media(max-width:920px){ .grid-2{grid-template-columns:1fr;} .grid-4{grid-template-columns:repeat(2,1fr);} }
 
   /* ===== Form ===== */
   label{ display:block; font-size:13px; color:var(--ink-soft); margin:0 0 5px; }
   .field{ margin-bottom:14px; }
-  input[type=text], input[type=date], select{ width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:9px; font-family:inherit; font-size:14.5px; background:#FBFCFC; color:var(--ink); }
+  input[type=text], input[type=date], select{ width:100%; padding:9px 12px; border:1px solid var(--line); border-radius:8px; font-family:inherit; font-size:14.5px; background:#FBFCFC; color:var(--ink); }
   input:focus, select:focus{ outline:2px solid var(--teal); outline-offset:1px; border-color:var(--teal); }
   .name-hint{ font-size:13px; color:var(--teal); margin-top:5px; min-height:18px; }
-  .btn{ border:none; cursor:pointer; font-family:inherit; font-weight:600; font-size:14px; padding:11px 20px; border-radius:var(--radius-pill); transition:transform .08s ease; display:inline-flex; align-items:center; gap:6px; }
+  .btn{ border:none; cursor:pointer; font-family:inherit; font-weight:600; font-size:14px; padding:11px 20px; border-radius:var(--radius-pill); transition:transform .08s ease; display:inline-flex; align-items:center; gap:6px; justify-content: center; }
   .btn:active{ transform:scale(.98); }
   .btn-primary{ background:var(--teal); color:#fff; }
   .btn-primary:hover{ background:var(--teal-deep); }
@@ -66,15 +65,11 @@
   .icon-btn:hover{ background:var(--teal-tint); color:var(--teal-deep); }
   .icon-btn.danger:hover{ background:var(--clay-tint); color:var(--clay); }
   
-  /* 📌 จัดกล่อง Filter แนวนอน */
   .search-row{ display:flex; gap:10px; margin-bottom:12px; flex-wrap: wrap; }
-  .search-row input, .search-row select { padding: 9px 12px; font-size: 13.5px; border-radius: 8px; border: 1px solid var(--line); }
-  .search-row input:focus, .search-row select:focus { outline: 2px solid var(--teal); border-color: var(--teal); }
-  
   .empty-state{ text-align:center; padding:30px 10px; color:var(--ink-soft); font-size:13.5px; }
 
   /* 📌 ล็อกหัวตาราง */
-  .table-scroll{ max-height:450px; overflow-y:auto; margin-top:6px; position:relative; }
+  .table-scroll{ max-height:450px; overflow-y:auto; overflow-x:auto; margin-top:6px; position:relative; -webkit-overflow-scrolling: touch;}
   .table-scroll th { position: sticky; top: 0; background: var(--surface); z-index: 10; text-align: left; color: var(--ink-soft); font-weight: 600; font-size: 12.5px; padding: 9px 10px; white-space: nowrap; }
   .table-scroll th::after { content: ''; position: absolute; left: 0; bottom: 0; width: 100%; border-bottom: 1px solid var(--line); }
   .th-highlight { background: var(--teal-tint) !important; color: var(--teal-deep) !important; }
@@ -98,9 +93,10 @@
   .stat-year .stat-icon { background: var(--teal-tint); color: var(--teal-deep); }
   .stat-year .value { color: var(--teal-deep); }
 
-  .sub-tabs{ display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap; }
-  .sub-tabs button{ all:unset; cursor:pointer; padding:8px 16px; border-radius:var(--radius-pill); font-size:13.5px; color:var(--ink-soft); border:1px solid var(--line); }
+  .sub-tabs{ display:flex; gap:8px; margin-bottom:18px; flex-wrap:nowrap; overflow-x: auto; padding-bottom: 5px; -webkit-overflow-scrolling: touch; }
+  .sub-tabs button{ all:unset; cursor:pointer; padding:8px 16px; border-radius:var(--radius-pill); font-size:13.5px; color:var(--ink-soft); border:1px solid var(--line); white-space: nowrap; flex-shrink: 0; }
   .sub-tabs button.active{ background:var(--teal); color:#fff; border-color:var(--teal); }
+  
   .quarter-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:16px; }
   .quarter-box{ background:var(--teal-tint); border-radius:12px; padding:14px; text-align:center; }
   .quarter-box .q-label{ font-size:12px; color:var(--teal-deep); opacity:.75; }
@@ -110,7 +106,6 @@
   .chip{ display:inline-flex; align-items:center; gap:6px; background:var(--clay-tint); color:var(--clay); border-radius:var(--radius-pill); padding:3px 10px; font-size:12px; margin:2px 4px 2px 0; }
   .error-box{ background:#FDECEE; border:1px solid #F5C6CB; color:#C2555F; padding:14px; border-radius:10px; font-size:13.5px; margin-bottom:14px; }
 
-  /* 📌 สไตล์สำหรับการ์ดแผนก (Department Cards) */
   .dept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-top: 10px; }
   .dept-card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); position: relative; overflow: hidden; transition: transform 0.2s; }
   .dept-card:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.08); }
@@ -121,8 +116,8 @@
   .dept-stat-big { font-size: 26px; font-weight: 700; font-family: 'Noto Serif Thai', serif; display:block; margin-top:2px; line-height: 1;}
 
   /* ===== Modal ===== */
-  .modal-backdrop{ position:fixed; inset:0; background:rgba(20,30,29,.42); display:flex; align-items:center; justify-content:center; z-index:50; }
-  .modal{ background:#fff; border-radius:16px; padding:26px; width:min(560px,92vw); max-height:85vh; overflow:auto; }
+  .modal-backdrop{ position:fixed; inset:0; background:rgba(20,30,29,.42); display:flex; align-items:center; justify-content:center; z-index:50; padding: 10px; }
+  .modal{ background:#fff; border-radius:16px; padding:26px; width:min(560px,100%); max-height:90vh; overflow:auto; }
   .modal h3{ margin-top:0; color:var(--teal-deep); margin-bottom:5px;}
   .close-x{ all:unset; float:right; cursor:pointer; font-size:18px; color:var(--ink-soft); }
   .loading{ display:flex; align-items:center; gap:10px; color:var(--ink-soft); font-size:14px; padding:14px 0; }
@@ -132,6 +127,60 @@
   .absence-item { padding:12px; background:var(--teal-tint); border-radius:10px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; }
   .absence-item b { color: var(--teal-deep); }
   .watch-item { padding:12px; border:1px solid var(--line); border-radius:10px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; }
+
+  /* 📱 ===== โหมดมือถือ (Mobile Responsive) ===== 📱 */
+  @media(max-width: 768px) {
+    .app { display: block; }
+    
+    /* แปลง Sidebar ให้เป็น Top Header */
+    .sidebar {
+      width: 100%; padding: 14px 20px; position: sticky; top: 0; z-index: 100;
+      flex-direction: row; justify-content: space-between; align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .brand .sub { display: none; } /* ซ่อนคำอธิบายยาวๆ */
+    .sidebar-foot { display: none; }
+    
+    /* เมนูย้ายไปอยู่ล่างสุดเป็น Bottom Nav (เหมือนแอป) */
+    .nav {
+      position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface);
+      flex-direction: row; padding: 10px 16px; gap: 10px; z-index: 100;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.06); 
+      padding-bottom: calc(10px + env(safe-area-inset-bottom));
+      border-top: 1px solid var(--line);
+    }
+    .nav button { 
+      flex: 1; flex-direction: column; justify-content: center; font-size: 12px; 
+      padding: 8px 4px; gap: 6px; border-radius: 12px; color: var(--ink-soft); background: transparent; 
+    }
+    .nav button svg { width: 22px; height: 22px; opacity: 1; }
+    .nav button.active { background: var(--teal-tint); color: var(--teal-deep); }
+
+    /* ปรับ Layout หน้าจอหลัก */
+    .main { padding: 20px 16px 100px 16px; max-width: 100%; }
+    .page-head { flex-direction: column; align-items: flex-start !important; gap: 12px; }
+    .page-head > div:last-child { width: 100%; justify-content: space-between; align-items: center;}
+    
+    .grid-2 { grid-template-columns: 1fr; }
+    .grid-4 { grid-template-columns: 1fr 1fr; } /* โชว์สถิติแถวละ 2 กล่อง */
+    .quarter-grid { grid-template-columns: 1fr 1fr; }
+    
+    .card { padding: 16px; }
+    .stat { padding: 16px; gap: 12px; }
+    .stat .value { font-size: 24px; }
+    .stat-icon { width: 40px; height: 40px; }
+    .stat-icon svg { width: 20px; height: 20px; }
+    
+    .search-row { flex-direction: column; }
+    .search-row input, .search-row select { width: 100%; }
+    
+    .btn-row { flex-direction: column; }
+    .btn-row .btn { width: 100%; }
+  }
+
+  @media(max-width: 480px) {
+    .grid-4 { grid-template-columns: 1fr; } /* หน้าจอเล็กมากโชว์แถวละ 1 กล่อง */
+  }
 
   /* ===== พิมพ์รายงาน (Print) ===== */
   @media print {
@@ -151,11 +200,12 @@
 <body>
 
 <div class="app">
+  <!-- Sidebar / Topbar in mobile -->
   <aside class="sidebar">
     <div class="brand"><div class="mark">ลาป่วย · บันทึก</div><div class="sub">ระบบติดตามการลาป่วยพนักงาน</div></div>
     <nav class="nav">
-      <button class="nav-btn active" data-view="entry"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/></svg> บันทึกข้อมูล</button>
-      <button class="nav-btn" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="12" width="4" height="8"/><rect x="10" y="7" width="4" height="13"/><rect x="16" y="3" width="4" height="17"/></svg> สถิติ & รายงาน</button>
+      <button class="nav-btn active" data-view="entry"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> บันทึกข้อมูล</button>
+      <button class="nav-btn" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg> สถิติ & รายงาน</button>
     </nav>
   </aside>
 
@@ -175,14 +225,11 @@
         <div class="card">
           <h3 class="section-title">รายการล่าสุด</h3>
           
+          <!-- Filter ค้นหา -->
           <div class="search-row">
-            <input type="text" id="searchInput" placeholder="พิมพ์หา วันที่ (เช่น 17/09), ชื่อ, รหัส..." style="flex: 2; min-width: 140px;">
-            <select id="filterDept" style="flex: 1; min-width: 90px;">
-              <option value="">ทุกแผนก</option>
-            </select>
-            <select id="filterYear" style="flex: 1; min-width: 80px;">
-              <option value="">ทุกปี</option>
-            </select>
+            <input type="text" id="searchInput" placeholder="ค้นหาวันที่ (17/09), ชื่อ, รหัส..." style="flex: 2; min-width: 140px;">
+            <select id="filterDept" style="flex: 1; min-width: 90px;"><option value="">ทุกแผนก</option></select>
+            <select id="filterYear" style="flex: 1; min-width: 80px;"><option value="">ทุกปี</option></select>
             <select id="filterMonth" style="flex: 1; min-width: 90px;">
               <option value="">ทุกเดือน</option>
               <option value="01">มกราคม</option><option value="02">กุมภาพันธ์</option><option value="03">มีนาคม</option>
@@ -197,11 +244,7 @@
             <table>
               <thead>
                 <tr>
-                  <th>วันที่</th>
-                  <th>รหัส</th>
-                  <th>ชื่อ-สกุล <span style="font-weight:normal; color:var(--ink-soft); font-size:11px;">(แผนก)</span></th>
-                  <th>อาการ</th>
-                  <th></th>
+                  <th>วันที่</th><th>รหัส</th><th>ชื่อ-สกุล <span style="font-weight:normal; color:var(--ink-soft); font-size:11px;">(แผนก)</span></th><th>อาการ</th><th></th>
                 </tr>
               </thead>
               <tbody id="entryTableBody"></tbody>
@@ -215,8 +258,8 @@
     <section id="view-dashboard" class="view" style="display:none;">
       <div class="page-head" style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:14px;">
         <div><h1>สถิติการลาป่วย</h1></div>
-        <div style="display:flex; gap:10px; align-items:flex-end;">
-          <div><label>ปีที่ดู</label><select id="yearSelect"></select></div>
+        <div style="display:flex; gap:10px; align-items:flex-end; width:100%; justify-content: space-between;">
+          <div style="flex:1; max-width:200px;"><label>ปีที่ดู</label><select id="yearSelect"></select></div>
           <button class="btn btn-ghost print-btn" onclick="window.print()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> พิมพ์รายงาน</button>
         </div>
       </div>
@@ -225,48 +268,24 @@
 
       <div id="dashContent" style="display:none;">
         <div class="grid-4" style="margin-bottom:20px;">
-          <!-- 1. ลาป่วยวันนี้ -->
-          <div class="stat stat-today">
-            <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg></div>
-            <div class="stat-info"><div class="label">ลาป่วยวันนี้</div><div class="value" id="statToday">0</div></div>
-          </div>
-          <!-- 2. เดือนนี้ -->
-          <div class="stat stat-month">
-            <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
-            <div class="stat-info"><div class="label">เดือนนี้</div><div class="value" id="statMonth">0<small>ครั้ง</small></div></div>
-          </div>
-          <!-- 3. ไตรมาสนี้ -->
-          <div class="stat stat-quarter">
-            <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg></div>
-            <div class="stat-info"><div class="label">ไตรมาสนี้</div><div class="value" id="statQuarter">0<small>ครั้ง</small></div></div>
-          </div>
-          <!-- 4. รวมทั้งปี -->
-          <div class="stat stat-year">
-            <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg></div>
-            <div class="stat-info"><div class="label">รวมทั้งปี</div><div class="value" id="statYear">0<small>ครั้ง</small></div></div>
-          </div>
+          <div class="stat stat-today"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg></div><div class="stat-info"><div class="label">ลาป่วยวันนี้</div><div class="value" id="statToday">0</div></div></div>
+          <div class="stat stat-month"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div><div class="stat-info"><div class="label">เดือนนี้</div><div class="value" id="statMonth">0<small>ครั้ง</small></div></div></div>
+          <div class="stat stat-quarter"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg></div><div class="stat-info"><div class="label">ไตรมาสนี้</div><div class="value" id="statQuarter">0<small>ครั้ง</small></div></div></div>
+          <div class="stat stat-year"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg></div><div class="stat-info"><div class="label">รวมทั้งปี</div><div class="value" id="statYear">0<small>ครั้ง</small></div></div></div>
         </div>
 
         <div class="sub-tabs">
           <button class="sub-tab-btn active" data-sub="overview">สรุปรายวัน & ไตรมาส</button>
           <button class="sub-tab-btn" data-sub="department">สรุปรายแผนก</button>
-          <button class="sub-tab-btn" data-sub="employee">รายบุคคล (แยกรายเดือน)</button>
+          <button class="sub-tab-btn" data-sub="employee">รายบุคคล</button>
           <button class="sub-tab-btn" data-sub="symptom">การดูแลสุขภาพ (Health Focus)</button>
         </div>
 
         <!-- แท็บ: ภาพรวม -->
         <div id="sub-overview" class="sub-view">
           <div class="grid-2" style="margin-bottom:18px;">
-            <div class="card">
-              <h3 class="section-title">สถานะวันนี้ (Today's Absence)</h3>
-              <p class="section-sub">รายชื่อพนักงานที่กำลังลาป่วยในวันนี้ เพื่อปรับแผนกำลังพล</p>
-              <div id="todayAbsenceList" style="margin-top:10px; max-height: 250px; overflow-y:auto;"></div>
-            </div>
-            <div class="card">
-              <h3 class="section-title">เฝ้าระวังเดือนนี้ (Watchlist)</h3>
-              <p class="section-sub">พนักงานที่ลาป่วยสะสมตั้งแต่ 3 ครั้งขึ้นไปในเดือนปัจจุบัน</p>
-              <div id="watchlistBody" style="margin-top:10px; max-height: 250px; overflow-y:auto;"></div>
-            </div>
+            <div class="card"><h3 class="section-title">สถานะวันนี้ (Today)</h3><p class="section-sub">รายชื่อพนักงานที่กำลังลาป่วยในวันนี้</p><div id="todayAbsenceList" style="margin-top:10px; max-height: 250px; overflow-y:auto;"></div></div>
+            <div class="card"><h3 class="section-title">เฝ้าระวังเดือนนี้ (Watchlist)</h3><p class="section-sub">พนักงานที่ลาป่วย 3 ครั้งขึ้นไปในเดือนนี้</p><div id="watchlistBody" style="margin-top:10px; max-height: 250px; overflow-y:auto;"></div></div>
           </div>
           <div class="card"><h3 class="section-title">สรุปรายไตรมาส</h3><div class="quarter-grid" id="quarterGrid"></div></div>
         </div>
@@ -275,7 +294,6 @@
         <div id="sub-department" class="sub-view" style="display:none;">
           <div class="card" style="background: transparent; border: none; box-shadow: none; padding: 0;">
             <h3 class="section-title">สถิติการลาป่วยแยกตามแผนก</h3>
-            <p class="section-sub">ดูยอดรวมการลาป่วย และจำนวนพนักงานที่เจ็บป่วยของแต่ละแผนกในปีนี้</p>
             <div class="dept-grid" id="deptGridContainer"></div>
           </div>
         </div>
@@ -283,11 +301,10 @@
         <!-- แท็บ: รายบุคคล -->
         <div id="sub-employee" class="sub-view" style="display:none;">
           <div class="card">
-            <h3 class="section-title">สรุปการลาป่วยรายบุคคล (แยกรายเดือน)</h3>
-            <p class="section-sub">ดูยอดรวมทั้งปี และสถิติการลาป่วยแต่ละเดือน ม.ค. - ธ.ค. ของพนักงานแต่ละคน</p>
+            <h3 class="section-title">สรุปการลาป่วยรายบุคคล</h3>
             <div class="search-row"><input type="text" id="empSearchInput" placeholder="ค้นหาชื่อ, รหัส หรือแผนก"></div>
             <div class="table-scroll">
-              <table style="min-width: 1050px;">
+              <table style="min-width: 900px;">
                 <thead>
                   <tr>
                     <th>รหัส</th><th>ชื่อ-สกุล</th><th>แผนก</th>
@@ -308,16 +325,10 @@
         <!-- แท็บ: Health Focus -->
         <div id="sub-symptom" class="sub-view" style="display:none;">
           <div class="card">
-            <h3 class="section-title">กลุ่มที่ควรได้รับการดูแลสุขภาพ (Health Focus)</h3>
-            <p class="section-sub">พนักงานที่มีความถี่การเจ็บป่วยสูงสุด 10 อันดับแรกประจำปี เพื่อเป็นข้อมูลประกอบการพิจารณาสวัสดิการเพิ่มเติม</p>
+            <h3 class="section-title">กลุ่มที่ควรได้รับการดูแลสุขภาพ (Top 10)</h3>
             <div class="table-scroll" style="max-height: 400px;">
-              <table style="width: 100%;">
-                <thead>
-                  <tr>
-                    <th style="text-align:center; width: 80px;">อันดับ</th>
-                    <th>ชื่อพนักงาน</th><th>แผนก</th><th style="text-align:center;">ความถี่ (ครั้ง)</th><th>อาการที่พบบ่อย</th>
-                  </tr>
-                </thead>
+              <table style="min-width: 500px;">
+                <thead><tr><th style="text-align:center;">อันดับ</th><th>ชื่อพนักงาน</th><th>แผนก</th><th style="text-align:center;">ความถี่</th><th>อาการที่พบบ่อย</th></tr></thead>
                 <tbody id="topLeaveTakersBody"></tbody>
               </table>
             </div>
@@ -384,7 +395,6 @@ function displayDateStr(dateStr) {
   return `${day}/${m}/${y}`;
 }
 
-// 📌 ดึงข้อความอาการตรงๆ ไม่ต้องจัดกลุ่มแล้ว เพื่อให้แสดงตามจริง
 function getRawSymptom(text){
   if(!text) return 'ไม่ระบุ';
   const t = String(text).trim();
@@ -418,7 +428,7 @@ async function loadAll(){
     document.getElementById('entryLoading').style.display = 'none'; document.getElementById('dashLoading').style.display = 'none';
     document.getElementById('dashContent').style.display = 'block';
     
-    populateEntryFilters(); // 📌 ดึงแผนกและปีมาใส่ Dropdown
+    populateEntryFilters(); 
     renderEmployeeDatalist(); renderEntryTable(); setupYearSelect(); renderDashboard();
   } catch(err){ 
     const errMsg = `<div class="error-box"><b>โหลดข้อมูลไม่สำเร็จ:</b><br>${escapeHtml(err.message)}</div>`;
@@ -432,9 +442,7 @@ function getEmpInfo(id){
   return e ? { name: e.name, dept: e.department || e.position || '-' } : { name: '', dept: '-' }; 
 }
 
-// 📌 ฟังก์ชันดึงรายชื่อแผนกและปีทั้งหมดมาใส่ใน Dropdown ตัวกรอง
 function populateEntryFilters() {
-  // ดึงแผนก
   const depts = new Set();
   state.employees.forEach(e => {
     const d = e.department || e.position;
@@ -443,7 +451,6 @@ function populateEntryFilters() {
   document.getElementById('filterDept').innerHTML = '<option value="">ทุกแผนก</option>' + 
     Array.from(depts).sort().map(d => `<option value="${escapeHtml(d)}">${escapeHtml(d)}</option>`).join('');
 
-  // ดึงปี
   const years = new Set(state.records.map(r => String(parseDateObj(r.date).getFullYear())).filter(y => y !== 'NaN'));
   years.add(String(new Date().getFullYear()));
   const sortedYears = Array.from(years).sort((a,b) => b - a);
@@ -458,7 +465,6 @@ document.getElementById('f_empId').addEventListener('input', (e) => {
   document.getElementById('nameHint').textContent = e.target.value.trim() ? (info.name ? 'ชื่อ: '+info.name + (info.dept !== '-' ? ` (${info.dept})` : '') : 'ไม่พบข้อมูลในระบบ') : '';
 });
 
-// 📌 ฟังก์ชัน Render ตาราง พร้อมระบบ Filter อัจฉริยะ 4 ทาง
 function renderEntryTable(){
   const q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
   const fDept = document.getElementById('filterDept').value;
@@ -595,7 +601,6 @@ function renderDashboard(){
 
 function renderDailyAndWatchlist(yearRecords, todayStr, curM, selYear) {
   const todayRecs = state.records.filter(r => getFormattedDateStr(r.date) === todayStr);
-  
   const todayHtml = todayRecs.length > 0 
     ? todayRecs.map(r => {
         const info = getEmpInfo(r.empId);
@@ -633,7 +638,6 @@ function renderDepartmentCards(yearRecords) {
     byDept[dept].count++;
     byDept[dept].emps.add(r.empId);
     
-    // 📌 ดึงคำดิบๆ มานับ
     const cat = getRawSymptom(r.symptom);
     byDept[dept].symptoms[cat] = (byDept[dept].symptoms[cat] || 0) + 1;
   });
@@ -694,7 +698,6 @@ function calculateEmployeeStats(yearRecords) {
       const m = parseDateObj(r.date).getMonth();
       if(!isNaN(m)) mCounts[m]++;
       
-      // 📌 ดึงคำดิบๆ มานับ
       const cat = getRawSymptom(r.symptom);
       catCounts[cat] = (catCounts[cat]||0) + 1;
     });
@@ -750,7 +753,6 @@ function openEmpModal(empId){
   if(!e && recs.length > 0) e = { name: recs[0].name || 'ไม่มีชื่อ', department: '-', position: '-' };
   
   const catCounts = {}; recs.forEach(r => { 
-    // 📌 ดึงคำดิบๆ มานับ
     const c = getRawSymptom(r.symptom); 
     catCounts[c] = (catCounts[c]||0)+1; 
   });
