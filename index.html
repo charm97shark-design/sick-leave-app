@@ -132,16 +132,14 @@
   @media(max-width: 768px) {
     .app { display: block; }
     
-    /* แปลง Sidebar ให้เป็น Top Header */
     .sidebar {
       width: 100%; padding: 14px 20px; position: sticky; top: 0; z-index: 100;
       flex-direction: row; justify-content: space-between; align-items: center;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
-    .brand .sub { display: none; } /* ซ่อนคำอธิบายยาวๆ */
+    .brand .sub { display: none; }
     .sidebar-foot { display: none; }
     
-    /* เมนูย้ายไปอยู่ล่างสุดเป็น Bottom Nav (เหมือนแอป) */
     .nav {
       position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface);
       flex-direction: row; padding: 10px 16px; gap: 10px; z-index: 100;
@@ -156,13 +154,12 @@
     .nav button svg { width: 22px; height: 22px; opacity: 1; }
     .nav button.active { background: var(--teal-tint); color: var(--teal-deep); }
 
-    /* ปรับ Layout หน้าจอหลัก */
     .main { padding: 20px 16px 100px 16px; max-width: 100%; }
     .page-head { flex-direction: column; align-items: flex-start !important; gap: 12px; }
     .page-head > div:last-child { width: 100%; justify-content: space-between; align-items: center;}
     
     .grid-2 { grid-template-columns: 1fr; }
-    .grid-4 { grid-template-columns: 1fr 1fr; } /* โชว์สถิติแถวละ 2 กล่อง */
+    .grid-4 { grid-template-columns: 1fr 1fr; } 
     .quarter-grid { grid-template-columns: 1fr 1fr; }
     
     .card { padding: 16px; }
@@ -179,7 +176,7 @@
   }
 
   @media(max-width: 480px) {
-    .grid-4 { grid-template-columns: 1fr; } /* หน้าจอเล็กมากโชว์แถวละ 1 กล่อง */
+    .grid-4 { grid-template-columns: 1fr; } 
   }
 
   /* ===== พิมพ์รายงาน (Print) ===== */
@@ -343,9 +340,18 @@
 <div id="empModalRoot"></div>
 
 <script>
-/* ================= CONFIG ================= */
+/* 🔴 1. ใส่ URL ของคุณแบบถูกต้อง 100% 🔴 */
 const CONFIG = {
   API_URL: 'https://script.google.com/macros/s/AKfycbwYxo5Bo-Ok-Y3M9VZ2szQC0j8eXX2raC2RSi0unuMSRyvQFAj0OildbG8ThdgSFbCHcw/exec'
+};
+
+/* 🔴 2. ระบบดักจับ Error ถ้ามีปัญหาจะขึ้นจอ ไม่ค้างหมุน 🔴 */
+window.onerror = function(message, source, lineno, colno, error) {
+    const errMsg = `<div class="error-box"><b>ตรวจพบข้อผิดพลาดในระบบ:</b><br>${message}<br><small>กรุณารีเฟรชหน้าเว็บ หากยังไม่หายให้ตรวจสอบโค้ด Code.gs</small></div>`;
+    const el1 = document.getElementById('entryLoading');
+    const el2 = document.getElementById('dashLoading');
+    if(el1) el1.innerHTML = errMsg;
+    if(el2) el2.innerHTML = errMsg;
 };
 
 /* ================= STATE & UTILS ================= */
@@ -408,16 +414,17 @@ async function apiGet(){
     const text = await res.text();
     try {
       const json = JSON.parse(text);
-      if(json.error) throw new Error("จากระบบ: " + json.error);
+      if(json.error) throw new Error("หลังบ้านส่ง Error กลับมา: " + json.error);
       return json;
     } catch(e) {
       if(text.includes('<!DOCTYPE html>')) {
-        throw new Error('ลิงก์ API ไม่ถูกต้อง หรือลืมตั้งสิทธิ์การเข้าถึง Web App ให้เป็น "Anyone" (ทุกคน)');
+        throw new Error('ระบบ Google ขอให้คุณยืนยันตัวตน หรือคุณอาจลืมเปลี่ยนเวอร์ชันและตั้งค่า Anyone ตอน Deploy');
       }
       throw new Error(e.message + " | " + text.slice(0, 50));
     }
   } catch(err) { throw new Error(err.message); }
 }
+
 async function apiPost(payload){ const res = await fetch(CONFIG.API_URL, { method:'POST', body:JSON.stringify(payload) }); return res.json(); }
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
@@ -601,6 +608,7 @@ function renderDashboard(){
 
 function renderDailyAndWatchlist(yearRecords, todayStr, curM, selYear) {
   const todayRecs = state.records.filter(r => getFormattedDateStr(r.date) === todayStr);
+  
   const todayHtml = todayRecs.length > 0 
     ? todayRecs.map(r => {
         const info = getEmpInfo(r.empId);
@@ -763,6 +771,7 @@ function openEmpModal(empId){
   document.getElementById('empModalRoot').innerHTML = `<div class="modal-backdrop" onclick="if(event.target===this) this.remove()"><div class="modal"><button class="close-x" onclick="document.getElementById('empModalRoot').innerHTML=''">✕</button><h3 style="margin-bottom:0;">${escapeHtml(e ? e.name : empId)}</h3><p class="section-sub">รหัส ${escapeHtml(empId)} · แผนก <b>${escapeHtml(deptStr)}</b> · ปี ${selYear} · ลาป่วยรวม <strong>${recs.length}</strong> ครั้ง</p><div style="margin-bottom:14px;">${chips || '<span class="section-sub">ไม่มีข้อมูล</span>'}</div><div class="table-scroll" style="max-height:350px;"><table><thead><tr><th>วันที่</th><th>อาการ</th><th>หมายเหตุ</th></tr></thead><tbody>${recs.map(r => `<tr><td>${escapeHtml(displayDateStr(r.date))}</td><td>${escapeHtml(r.symptom\vert{}\vert{}'')}</td><td>${escapeHtml(r.note||'')}</td></tr>`).join('')}</tbody></table></div></div></div>`;
 }
 
+// 📌 คำสั่งเริ่มต้นทำงานเมื่อเปิดหน้าเว็บ
 document.getElementById('f_date').valueAsDate = new Date();
 loadAll();
 </script>
