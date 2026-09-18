@@ -197,7 +197,6 @@
 <body>
 
 <div class="app">
-  <!-- Sidebar / Topbar in mobile -->
   <aside class="sidebar">
     <div class="brand"><div class="mark">ลาป่วย · บันทึก</div><div class="sub">ระบบติดตามการลาป่วยพนักงาน</div></div>
     <nav class="nav">
@@ -207,7 +206,6 @@
   </aside>
 
   <main class="main">
-    <!-- ENTRY VIEW -->
     <section id="view-entry" class="view">
       <div class="page-head"><h1>บันทึกการลาป่วย</h1><p>กรอกข้อมูลเพียงไม่กี่ช่อง ระบบจะดึงชื่อพนักงานให้อัตโนมัติ</p></div>
       <div class="grid-2">
@@ -221,8 +219,6 @@
         </div>
         <div class="card">
           <h3 class="section-title">รายการล่าสุด</h3>
-          
-          <!-- Filter ค้นหา -->
           <div class="search-row">
             <input type="text" id="searchInput" placeholder="ค้นหาวันที่ (17/09), ชื่อ, รหัส..." style="flex: 2; min-width: 140px;">
             <select id="filterDept" style="flex: 1; min-width: 90px;"><option value="">ทุกแผนก</option></select>
@@ -235,14 +231,11 @@
               <option value="10">ตุลาคม</option><option value="11">พฤศจิกายน</option><option value="12">ธันวาคม</option>
             </select>
           </div>
-          
           <div id="entryLoading" class="loading"><div class="spinner"></div> กำลังโหลดข้อมูล...</div>
           <div class="table-scroll">
             <table>
               <thead>
-                <tr>
-                  <th>วันที่</th><th>รหัส</th><th>ชื่อ-สกุล <span style="font-weight:normal; color:var(--ink-soft); font-size:11px;">(แผนก)</span></th><th>อาการ</th><th></th>
-                </tr>
+                <tr><th>วันที่</th><th>รหัส</th><th>ชื่อ-สกุล <span style="font-weight:normal; color:var(--ink-soft); font-size:11px;">(แผนก)</span></th><th>อาการ</th><th></th></tr>
               </thead>
               <tbody id="entryTableBody"></tbody>
             </table>
@@ -251,7 +244,6 @@
       </div>
     </section>
 
-    <!-- DASHBOARD VIEW -->
     <section id="view-dashboard" class="view" style="display:none;">
       <div class="page-head" style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:14px;">
         <div><h1>สถิติการลาป่วย</h1></div>
@@ -278,7 +270,6 @@
           <button class="sub-tab-btn" data-sub="symptom">การดูแลสุขภาพ (Health Focus)</button>
         </div>
 
-        <!-- แท็บ: ภาพรวม -->
         <div id="sub-overview" class="sub-view">
           <div class="grid-2" style="margin-bottom:18px;">
             <div class="card"><h3 class="section-title">สถานะวันนี้ (Today)</h3><p class="section-sub">รายชื่อพนักงานที่กำลังลาป่วยในวันนี้</p><div id="todayAbsenceList" style="margin-top:10px; max-height: 250px; overflow-y:auto;"></div></div>
@@ -287,7 +278,6 @@
           <div class="card"><h3 class="section-title">สรุปรายไตรมาส</h3><div class="quarter-grid" id="quarterGrid"></div></div>
         </div>
 
-        <!-- แท็บ: สรุปรายแผนก -->
         <div id="sub-department" class="sub-view" style="display:none;">
           <div class="card" style="background: transparent; border: none; box-shadow: none; padding: 0;">
             <h3 class="section-title">สถิติการลาป่วยแยกตามแผนก</h3>
@@ -295,7 +285,6 @@
           </div>
         </div>
 
-        <!-- แท็บ: รายบุคคล -->
         <div id="sub-employee" class="sub-view" style="display:none;">
           <div class="card">
             <h3 class="section-title">สรุปการลาป่วยรายบุคคล</h3>
@@ -319,7 +308,6 @@
           </div>
         </div>
 
-        <!-- แท็บ: Health Focus -->
         <div id="sub-symptom" class="sub-view" style="display:none;">
           <div class="card">
             <h3 class="section-title">กลุ่มที่ควรได้รับการดูแลสุขภาพ (Top 10)</h3>
@@ -340,12 +328,12 @@
 <div id="empModalRoot"></div>
 
 <script>
-/* 🔴 1. ใส่ URL ของคุณแบบถูกต้อง 100% 🔴 */
+/* 🔴 1. ใส่ URL ของคุณ */
 const CONFIG = {
   API_URL: 'https://script.google.com/macros/s/AKfycbwYxo5Bo-Ok-Y3M9VZ2szQC0j8eXX2raC2RSi0unuMSRyvQFAj0OildbG8ThdgSFbCHcw/exec'
 };
 
-/* 🔴 2. ระบบดักจับ Error ถ้ามีปัญหาจะขึ้นจอ ไม่ค้างหมุน 🔴 */
+/* 🔴 2. ระบบดัก Error ขั้นสูง */
 window.onerror = function(message, source, lineno, colno, error) {
     const errMsg = `<div class="error-box"><b>ตรวจพบข้อผิดพลาดในระบบ:</b><br>${message}<br><small>กรุณารีเฟรชหน้าเว็บ หากยังไม่หายให้ตรวจสอบโค้ด Code.gs</small></div>`;
     const el1 = document.getElementById('entryLoading');
@@ -407,10 +395,12 @@ function getRawSymptom(text){
   return t === '' ? 'ไม่ระบุ' : t;
 }
 
-/* ================= API ================= */
+/* ================= API (มีโค้ดกันแคชค้าง) ================= */
 async function apiGet(){ 
   try {
-    const res = await fetch(CONFIG.API_URL + '?action=getData');
+    // 📌 ยัดโค้ดกันแคชค้าง (nocache) ให้ระบบดึงของใหม่เสมอ 100%
+    const url = CONFIG.API_URL + '?action=getData&nocache=' + new Date().getTime();
+    const res = await fetch(url);
     const text = await res.text();
     try {
       const json = JSON.parse(text);
@@ -418,7 +408,7 @@ async function apiGet(){
       return json;
     } catch(e) {
       if(text.includes('<!DOCTYPE html>')) {
-        throw new Error('ระบบ Google ขอให้คุณยืนยันตัวตน หรือคุณอาจลืมเปลี่ยนเวอร์ชันและตั้งค่า Anyone ตอน Deploy');
+        throw new Error('ระบบ Google ขอให้คุณยืนยันตัวตน หรือคุณอาจลืมเปลี่ยนเวอร์ชันตอน Deploy');
       }
       throw new Error(e.message + " | " + text.slice(0, 50));
     }
@@ -771,7 +761,6 @@ function openEmpModal(empId){
   document.getElementById('empModalRoot').innerHTML = `<div class="modal-backdrop" onclick="if(event.target===this) this.remove()"><div class="modal"><button class="close-x" onclick="document.getElementById('empModalRoot').innerHTML=''">✕</button><h3 style="margin-bottom:0;">${escapeHtml(e ? e.name : empId)}</h3><p class="section-sub">รหัส ${escapeHtml(empId)} · แผนก <b>${escapeHtml(deptStr)}</b> · ปี ${selYear} · ลาป่วยรวม <strong>${recs.length}</strong> ครั้ง</p><div style="margin-bottom:14px;">${chips || '<span class="section-sub">ไม่มีข้อมูล</span>'}</div><div class="table-scroll" style="max-height:350px;"><table><thead><tr><th>วันที่</th><th>อาการ</th><th>หมายเหตุ</th></tr></thead><tbody>${recs.map(r => `<tr><td>${escapeHtml(displayDateStr(r.date))}</td><td>${escapeHtml(r.symptom\vert{}\vert{}'')}</td><td>${escapeHtml(r.note||'')}</td></tr>`).join('')}</tbody></table></div></div></div>`;
 }
 
-// 📌 คำสั่งเริ่มต้นทำงานเมื่อเปิดหน้าเว็บ
 document.getElementById('f_date').valueAsDate = new Date();
 loadAll();
 </script>
