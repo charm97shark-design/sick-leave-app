@@ -9,7 +9,7 @@
 <div class="actions no-print"><button class="ghost" id="refresh">↻ รีเฟรชข้อมูล</button><span class="muted" id="status">กำลังโหลด...</span></div></main></div><div id="modalRoot"></div>
 <script>
 // Leave blank when served from Apps Script HtmlService; fill with /exec URL for external hosting.
-const API_URL='';
+const API_URL='https://script.google.com/macros/s/AKfycbwYxo5Bo-Ok-Y3M9VZ2szQC0j8eXX2raC2RSi0unuMSRyvQFAj0OildbG8ThdgSFbCHcw/exec';
 const S={records:[],employees:[],editing:null,stats:[]};
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
